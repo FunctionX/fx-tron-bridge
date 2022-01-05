@@ -1,0 +1,10 @@
+build
+*.log
+.idea
+.vscode
+.DS_Store
+go.sum
+github.com
+*.xlsx
+*.key
+*.password
