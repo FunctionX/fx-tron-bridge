@@ -69,7 +69,7 @@ func newBridgeCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fxTronBridge, err := bridge.NewFxTronBridge(bridgeAddr, tronGrpc, "", fxGrpc, orcPrivKey, tronPrivateKey)
+			fxTronBridge, err := bridge.NewFxTronBridge(bridgeAddr, tronGrpc, fxGrpc, orcPrivKey, tronPrivateKey)
 			if err != nil {
 				return err
 			}

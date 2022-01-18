@@ -22,8 +22,7 @@ import (
 )
 
 const grpcUrl = "http://127.0.0.1:50051"
-const rpcUrl = "http://127.0.0.1:50545/jsonrpc"
-const testTronPrivKey =  ""
+const testTronPrivKey = ""
 
 func TestNewTronClient(t *testing.T) {
 	cli, err := NewTronGrpcClient(grpcUrl)
@@ -63,7 +62,7 @@ func TestWithMint(t *testing.T) {
 }
 
 func TestSendToFx(t *testing.T) {
-	cli, err := NewTronGrpcJsonRpcClient(grpcUrl, rpcUrl)
+	cli, err := NewTronGrpcClient(grpcUrl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -154,7 +153,7 @@ func TestSize(t *testing.T) {
 }
 
 func TestGasPrice(t *testing.T) {
-	cli, err := NewTronJsonRpcClient(rpcUrl)
+	cli, err := NewTronGrpcClient(grpcUrl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -193,7 +192,7 @@ func TestGetChainParams(t *testing.T) {
 }
 
 func TestEstimateGas(t *testing.T) {
-	cli, err := NewTronGrpcJsonRpcClient(grpcUrl, rpcUrl)
+	cli, err := NewTronGrpcClient(grpcUrl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,7 +243,7 @@ func TestGetFeeLimit(t *testing.T) {
 }
 
 func TestEnergy(t *testing.T) {
-	cli, err := NewTronJsonRpcClient(rpcUrl)
+	cli, err := NewTronGrpcClient(grpcUrl)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -275,7 +274,7 @@ func TestEnergy(t *testing.T) {
 		GasPrice: gasPrice,
 		Data:     data,
 	}
-	estimateGas, err := cli.JsonRpcClient.EstimateGas(context.Background(), msg)
+	estimateGas, err := cli.EstimateGas(msg.From.Bytes(), msg.To.Bytes(), msg.Data)
 	if err != nil {
 		t.Fatal(err)
 	}

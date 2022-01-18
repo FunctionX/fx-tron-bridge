@@ -7,7 +7,7 @@ import (
 
 const FxAddressPrefixEnv = "FX_ADDRESS_PREFIX"
 const LogLevelFlag = "log-level"
-const Tron   = "tron"
+const Tron = "tron"
 
 var ErrSendTx = errors.New("tron bridge send tx failed")
 

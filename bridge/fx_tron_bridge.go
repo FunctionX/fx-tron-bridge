@@ -1,14 +1,13 @@
 package bridge
 
 import (
-	"context"
 	"crypto/ecdsa"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	"github.com/functionx/fx-tron-bridge/client"
 	"github.com/functionx/fx-tron-bridge/fxchain"
 	"github.com/functionx/fx-tron-bridge/utils/logger"
-	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	"time"
 )
 
@@ -22,16 +21,10 @@ type FxTronBridge struct {
 	TronPrivKey      *ecdsa.PrivateKey
 }
 
-func NewFxTronBridge(bridgeAddr, tronGrpc, tronJsonRpc, fxGrpc string, orcPrivKey *secp256k1.PrivKey, tronPrivateKey *ecdsa.PrivateKey) (*FxTronBridge, error) {
-	logger.Infof("NewFxTronBridge, bridgeAddr: %s, tronGrpc: %v, tronJsonRpc: %v, fxGrpc: %v", bridgeAddr, tronGrpc, tronJsonRpc, fxGrpc)
+func NewFxTronBridge(bridgeAddr, tronGrpc, fxGrpc string, orcPrivKey *secp256k1.PrivKey, tronPrivateKey *ecdsa.PrivateKey) (*FxTronBridge, error) {
+	logger.Infof("NewFxTronBridge, bridgeAddr: %s, tronGrpc: %v, fxGrpc: %v", bridgeAddr, tronGrpc, fxGrpc)
 
-	var tronClient *client.TronClient
-	var err error
-	if tronGrpc != "" && tronJsonRpc != "" {
-		tronClient, err = client.NewTronGrpcJsonRpcClient(tronGrpc, tronJsonRpc)
-	} else if tronGrpc != "" {
-		tronClient, err = client.NewTronGrpcClient(tronGrpc)
-	}
+	tronClient, err := client.NewTronGrpcClient(tronGrpc)
 	if err != nil {
 		return nil, err
 	}
@@ -69,17 +62,6 @@ func (f *FxTronBridge) WaitNewBlock() {
 		block, fxErr := f.CrossChainClient.GetLatestBlock()
 		if tronErr == nil && fxErr == nil {
 			logger.Infof("withSyncBlock tronLastBlockNumber: %v, fxLastBlockNumber: %v", tronLastBlockNumber, block.GetHeader().Height)
-
-			if f.TronClient.JsonRpcClient != nil {
-				jsonRpcBlockNumber, err := f.TronClient.JsonRpcClient.BlockNumber(context.Background())
-				if err != nil {
-					logger.Warnf("could not reach tron json rpc! err: %v", err)
-					time.Sleep(retryTime)
-					continue
-				}
-				logger.Infof("withSyncBlock tron json rpc block number: %v", jsonRpcBlockNumber)
-			}
-
 			return
 		}
 		if tronErr == nil && fxErr != nil {

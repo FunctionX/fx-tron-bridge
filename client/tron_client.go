@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	"github.com/fbsobreira/gotron-sdk/pkg/client"
@@ -30,7 +29,6 @@ const signaturePrefix = "\x19TRON Signed Message:\n32"
 
 type TronClient struct {
 	*client.GrpcClient
-	JsonRpcClient *ethclient.Client
 }
 
 func NewTronGrpcClient(grpcUrl string) (*TronClient, error) {
@@ -54,32 +52,7 @@ func NewTronGrpcClient(grpcUrl string) (*TronClient, error) {
 	return &TronClient{GrpcClient: cli}, nil
 }
 
-func NewTronGrpcJsonRpcClient(grpcUrl, jsonRpcUrl string) (*TronClient, error) {
-	tronClient, err := NewTronGrpcClient(grpcUrl)
-	if err != nil {
-		return nil, err
-	}
-	dial, err := ethclient.Dial(jsonRpcUrl)
-	if err != nil {
-		return nil, err
-	}
-	tronClient.JsonRpcClient = dial
-	return tronClient, nil
-}
-
-func NewTronJsonRpcClient(jsonRpcUrl string) (*TronClient, error) {
-	dial, err := ethclient.Dial(jsonRpcUrl)
-	if err != nil {
-		return nil, err
-	}
-	return &TronClient{JsonRpcClient: dial}, nil
-}
-
 func (c TronClient) SuggestGasPrice() (*big.Int, error) {
-	if c.JsonRpcClient != nil {
-		return c.JsonRpcClient.SuggestGasPrice(context.Background())
-	}
-
 	parameters, err := c.Client.GetChainParameters(context.Background(), &api.EmptyMessage{})
 	if err != nil {
 		return nil, err
@@ -93,7 +66,7 @@ func (c TronClient) SuggestGasPrice() (*big.Int, error) {
 	return nil, fmt.Errorf("not gasPrice")
 }
 
-func (c *TronClient) EstimateGas(from, to []byte, data []byte) (uint64, error) {
+func (c *TronClient) EstimateGas(from, to, data []byte) (uint64, error) {
 	tx := &sdkContract.TriggerSmartContract{
 		OwnerAddress:    from,
 		ContractAddress: to,

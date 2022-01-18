@@ -6,12 +6,12 @@ import (
 	ethAbi "github.com/ethereum/go-ethereum/accounts/abi"
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/functionx/fx-tron-bridge/contract"
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	sdkCommon "github.com/fbsobreira/gotron-sdk/pkg/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
 	sdkContract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
+	"github.com/functionx/fx-tron-bridge/contract"
 	"math/big"
 	"strings"
 )

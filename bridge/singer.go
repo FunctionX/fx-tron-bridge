@@ -4,10 +4,10 @@ import (
 	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
+	gravitytypes "github.com/functionx/fx-core/x/crosschain/types"
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/client"
 	"github.com/functionx/fx-tron-bridge/utils/logger"
-	gravitytypes "github.com/functionx/fx-core/x/crosschain/types"
 	"sort"
 	"strconv"
 )

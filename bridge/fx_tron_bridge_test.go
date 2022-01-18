@@ -5,18 +5,18 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/functionx/fx-tron-bridge/client"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	sdkContract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
 	"github.com/functionx/fx-core/app"
+	"github.com/functionx/fx-tron-bridge/client"
+	"github.com/functionx/fx-tron-bridge/utils/logger"
 	"strconv"
 	"testing"
 )
 
-const testOrcMnemonic =  ""
-const testTronPrivKey =  ""
+const testOrcMnemonic = ""
+const testTronPrivKey = ""
 
 func TestConnect(t *testing.T) {
 	fxBridge, err := GetTestFxBridge()

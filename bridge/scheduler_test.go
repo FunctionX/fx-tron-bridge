@@ -2,9 +2,9 @@ package bridge
 
 import (
 	"github.com/ethereum/go-ethereum/crypto"
-	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-core/app"
 	"github.com/functionx/fx-core/x/crosschain/types"
+	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"testing"
 )
 
