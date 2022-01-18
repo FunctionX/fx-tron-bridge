@@ -345,7 +345,6 @@ func readLastBlockNumber() (uint64, error) {
 	fileName := path.Join(os.ExpandEnv(fxtronbridge.TronHome), "lastBlockNumber.info")
 	isFile, err := utils.PathExists(fileName)
 	if err != nil {
-		logger.Errorf("Path exists fileName: %v, err: %v", fileName, err)
 		return 0, err
 	}
 	if !isFile {
@@ -353,7 +352,6 @@ func readLastBlockNumber() (uint64, error) {
 	}
 	bytes, err := ioutil.ReadFile(fileName)
 	if err != nil {
-		logger.Errorf("Read last block number fail fileName: %v, err: %v", fileName, err)
 		return 0, err
 	}
 	str := string(bytes)
@@ -366,7 +364,6 @@ func readLastBlockNumber() (uint64, error) {
 func saveLastBlockNumber(lastBlockNumber uint64) error {
 	filePath := os.ExpandEnv(fxtronbridge.TronHome)
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
-		logger.Errorf("Save last block number fail filePath: %v, err: %v", filePath, err)
 		return err
 	}
 	fileName := path.Join(filePath, "lastBlockNumber.info")

@@ -25,7 +25,7 @@ func GetTestClient() (*FxTronBridge, error) {
 	if err != nil {
 		return nil, err
 	}
-	fxBridge, err := NewFxTronBridge("TGKeDpMMbgqDfT7CNsWZ5Xzvh4Ch9KyETr", "http://127.0.0.1:50051", "http://127.0.0.1:50545/jsonrpc", "http://127.0.0.1:9090", orcPrivKey, tronPrivateKey)
+	fxBridge, err := NewFxTronBridge("TGKeDpMMbgqDfT7CNsWZ5Xzvh4Ch9KyETr", "http://127.0.0.1:50051", "http://127.0.0.1:9090", orcPrivKey, tronPrivateKey)
 	if err != nil {
 		return nil, err
 	}

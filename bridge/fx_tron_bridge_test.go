@@ -42,7 +42,7 @@ func GetTestFxBridge() (*FxTronBridge, error) {
 	if err != nil {
 		return nil, err
 	}
-	fxBridge, err := NewFxTronBridge("TDrfM9c4P2rSkg41C3bCPn8wW1MMR93gXq", "http://127.0.0.1:50051", "http://127.0.0.1:50545/jsonrpc", "http://127.0.0.1:9090", orcPrivKey, tronPrivateKey)
+	fxBridge, err := NewFxTronBridge("TDrfM9c4P2rSkg41C3bCPn8wW1MMR93gXq", "http://127.0.0.1:50051", "http://127.0.0.1:9090", orcPrivKey, tronPrivateKey)
 	if err != nil {
 		return nil, err
 	}
