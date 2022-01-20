@@ -7,6 +7,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"math/big"
+	"net/url"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
@@ -20,9 +24,6 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/google"
-	"math/big"
-	"net/url"
-	"time"
 )
 
 const signaturePrefix = "\x19TRON Signed Message:\n32"
@@ -79,6 +80,7 @@ func (c *TronClient) EstimateGas(from, to, data []byte) (uint64, error) {
 
 	rets := transactionExtention.Transaction.Ret
 	for _, ret := range rets {
+		// no
 		if ret.Ret != core.Transaction_Result_SUCESS {
 			var constantResults []byte
 			for _, by := range transactionExtention.ConstantResult[0] {

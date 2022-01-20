@@ -7,7 +7,7 @@ import (
 	gravitytypes "github.com/functionx/fx-core/x/crosschain/types"
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/client"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"sort"
 	"strconv"
 )

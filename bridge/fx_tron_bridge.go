@@ -7,7 +7,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	"github.com/functionx/fx-tron-bridge/client"
 	"github.com/functionx/fx-tron-bridge/fxchain"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"time"
 )
 

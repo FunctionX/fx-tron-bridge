@@ -3,8 +3,8 @@ package main
 import (
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/bridge"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"github.com/functionx/fx-tron-bridge/utils"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"

@@ -2,7 +2,7 @@ package bridge
 
 import (
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"time"
 )
 

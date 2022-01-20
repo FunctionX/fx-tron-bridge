@@ -2,7 +2,7 @@ package fxtronbridge
 
 import (
 	"fmt"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"

@@ -10,7 +10,7 @@ import (
 	sdkContract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
 	"github.com/functionx/fx-core/app"
 	"github.com/functionx/fx-tron-bridge/client"
-	"github.com/functionx/fx-tron-bridge/utils/logger"
+	"github.com/functionx/fx-tron-bridge/logger"
 	"strconv"
 	"testing"
 )

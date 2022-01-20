@@ -3,6 +3,9 @@ package client
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"strings"
+
 	ethAbi "github.com/ethereum/go-ethereum/accounts/abi"
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -12,8 +15,6 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
 	sdkContract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
 	"github.com/functionx/fx-tron-bridge/contract"
-	"math/big"
-	"strings"
 )
 
 var fxBridgeAbi ethAbi.ABI
