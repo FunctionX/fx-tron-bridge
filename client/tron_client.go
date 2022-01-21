@@ -158,7 +158,7 @@ func (c *TronClient) BroadcastTransaction(tx *api.TransactionExtention) (*api.Re
 func (c *TronClient) WithMint(txId []byte) (info *core.TransactionInfo, err error) {
 	transactionId := new(api.BytesMessage)
 	transactionId.Value = txId
-	timeout, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	timeout, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	for {
 		info, err = c.Client.GetTransactionInfoById(timeout, transactionId)
