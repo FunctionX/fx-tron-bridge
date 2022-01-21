@@ -78,9 +78,12 @@ func (c *TronClient) EstimateGas(from, to, data []byte) (uint64, error) {
 		return 0, err
 	}
 
+	if transactionExtention.Transaction == nil {
+		return 0, fmt.Errorf("transaction is nil")
+	}
 	rets := transactionExtention.Transaction.Ret
 	for _, ret := range rets {
-		// no
+
 		if ret.Ret != core.Transaction_Result_SUCESS {
 			var constantResults []byte
 			for _, by := range transactionExtention.ConstantResult[0] {
