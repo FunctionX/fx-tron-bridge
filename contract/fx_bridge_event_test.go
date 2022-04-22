@@ -8,7 +8,7 @@ import (
 
 func TestAddressToString(t *testing.T) {
 	ethAddress := ethCommon.HexToAddress("0x8a21bcef7269bd328bf843207bfe0d84dc3b68e9")
-	tronAddress := AddressToString(ethAddress)
+	tronAddress := addressToString(ethAddress)
 	t.Log("tronAddress:", tronAddress)
 }
 

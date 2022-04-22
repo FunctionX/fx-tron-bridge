@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"encoding/hex"
 	"encoding/json"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum"
@@ -12,8 +11,6 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	"github.com/fbsobreira/gotron-sdk/pkg/client"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/api"
-	sdkContract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
-	"github.com/functionx/fx-tron-bridge/contract"
 	"github.com/gogo/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -232,82 +229,4 @@ func TestEnergy(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Logf("energy: %v", estimateGas)
-}
-
-func TestSendToFx(t *testing.T) {
-	cli, err := NewTronGrpcClient(grpcUrl)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	gasPrice, err := cli.SuggestGasPrice(context.Background())
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, destination, err := bech32.DecodeAndConvert("fx1zgpzdf2uqla7hkx85wnn4p2r3duwqzd8xst6v2")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var destinationByte32 [32]byte
-	copy(destinationByte32[12:], destination)
-	var targetIBCByte32 [32]byte
-	copy(targetIBCByte32[:], "transfer/channel-0")
-
-	params := []abi.Param{
-		{"address": "TBswVtM9kcgwq35RGLC3xEH4ec8LxavfsX"},
-		{"bytes32": destinationByte32},
-		{"bytes32": targetIBCByte32},
-		{"uint256": big.NewInt(int64(80000001))},
-	}
-
-	data, err := abi.Pack("sendToFx(address,bytes32,bytes32,uint256)", params)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	contractDesc, err := address.Base58ToAddress("TXqLgpc9FnixpZMrAA6M2PYgZaPfqRUdU7")
-	if err != nil {
-		t.Fatal(err)
-	}
-	tronPrivateKey, err := crypto.HexToECDSA(testTronPrivKey)
-	if err != nil {
-		t.Fatal(err)
-	}
-	tronAddress := address.PubkeyToAddress(tronPrivateKey.PublicKey)
-	t.Log("tronAddress:", tronAddress.String())
-
-	energy, err := cli.EstimateGas(tronAddress.Bytes(), contractDesc.Bytes(), data)
-	if err != nil {
-		t.Fatal(err)
-	}
-	feeLimit := GetLimit(gasPrice, energy)
-	t.Log("feeLimit:", feeLimit)
-
-	tx, err := cli.TriggerContract(&sdkContract.TriggerSmartContract{
-		OwnerAddress:    tronAddress.Bytes(),
-		ContractAddress: contractDesc.Bytes(),
-		Data:            data,
-	}, feeLimit)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signTx, err := contract.SignTx(tronPrivateKey, tx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	apiReturn, err := cli.BroadcastTx(signTx)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	info, err := cli.WithMint(tx.Txid, time.Second*30)
-	if err != nil {
-		t.Fatal(err)
-	}
-	receipt := info.Receipt
-
-	t.Logf("EnergyUsage: %v, EnergyUsageTotal: %v, NetUsage: %v, RawData: %v, Signature:%v, data:%v", receipt.EnergyUsage, receipt.EnergyUsageTotal, receipt.NetUsage, len(signTx.Transaction.RawData.Data), len(signTx.Transaction.Signature), len(data))
-	t.Logf("apiReturn: %v, txHash: %v, code: %v", apiReturn, hex.EncodeToString(tx.Txid), info.Receipt.Result)
 }
