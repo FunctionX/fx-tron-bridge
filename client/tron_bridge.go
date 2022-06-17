@@ -184,7 +184,9 @@ func (c *TronClient) LastBatchNonce(contractAddress string, erc20Address string)
 	if err != nil {
 		return 0, err
 	}
-
+	if len(transactionExtention.ConstantResult) <= 0 {
+		return 0, fmt.Errorf("trigger constant lastBatchNonce() error contractAddress: %v", contractAddress)
+	}
 	return new(big.Int).SetBytes(transactionExtention.ConstantResult[0]).Uint64(), nil
 }
 
@@ -211,7 +213,9 @@ func (c *TronClient) Allowance(contractAddress, owner, spender string) (*big.Int
 	if err != nil {
 		return nil, err
 	}
-
+	if len(transactionExtention.ConstantResult) <= 0 {
+		return nil, fmt.Errorf("trigger constant allowance() error contractAddress: %v", contractAddress)
+	}
 	return new(big.Int).SetBytes(transactionExtention.ConstantResult[0]), nil
 }
 
@@ -237,6 +241,9 @@ func (c *TronClient) GetTokenStatus(contractAddress, tokenAddress string) (bool,
 	if err != nil {
 		return false, false, false, err
 	}
+	if len(transactionExtention.ConstantResult) <= 0 {
+		return false, false, false, fmt.Errorf("trigger constant tokenStatus() error contractAddress: %v", contractAddress)
+	}
 
 	outputMap := make(map[string]interface{})
 	err = fxBridgeAbi.UnpackIntoMap(outputMap, "tokenStatus", transactionExtention.ConstantResult[0])
@@ -251,6 +258,9 @@ func (c *TronClient) GetBridgeTokenList(contractAddress string) ([]contract.FxBr
 	transactionExtention, err := c.TriggerConstantContract("", contractAddress, "getBridgeTokenList()", "")
 	if err != nil {
 		return nil, err
+	}
+	if len(transactionExtention.ConstantResult) <= 0 {
+		return nil, fmt.Errorf("trigger constant getBridgeTokenList() error contractAddress: %v", contractAddress)
 	}
 	unpackOut, err := fxBridgeAbi.Unpack("getBridgeTokenList", transactionExtention.ConstantResult[0])
 	if err != nil {
