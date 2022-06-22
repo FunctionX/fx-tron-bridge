@@ -92,8 +92,8 @@ func (cli *CrossChainClient) OracleSetRequest(nonce uint64, chainName string) (*
 	return response.OracleSet, nil
 }
 
-func (cli *CrossChainClient) LastPendingBatchRequestByAddr(orchestratorAddress string, chainName string) (*crosschaintypes.OutgoingTxBatch, error) {
-	response, err := cli.crossChainClient.LastPendingBatchRequestByAddr(context.Background(), &crosschaintypes.QueryLastPendingBatchRequestByAddrRequest{OrchestratorAddress: orchestratorAddress, ChainName: chainName})
+func (cli *CrossChainClient) LastPendingBatchRequestByAddr(bridgerAddress string, chainName string) (*crosschaintypes.OutgoingTxBatch, error) {
+	response, err := cli.crossChainClient.LastPendingBatchRequestByAddr(context.Background(), &crosschaintypes.QueryLastPendingBatchRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -108,32 +108,32 @@ func (cli *CrossChainClient) Params(chainName string) (*crosschaintypes.Params, 
 	return &response.Params, nil
 }
 
-func (cli *CrossChainClient) LastPendingOracleSetRequestByAddr(orchestratorAddress string, chainName string) ([]*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.LastPendingOracleSetRequestByAddr(context.Background(), &crosschaintypes.QueryLastPendingOracleSetRequestByAddrRequest{OrchestratorAddress: orchestratorAddress, ChainName: chainName})
+func (cli *CrossChainClient) LastPendingOracleSetRequestByAddr(bridgerAddress string, chainName string) ([]*crosschaintypes.OracleSet, error) {
+	response, err := cli.crossChainClient.LastPendingOracleSetRequestByAddr(context.Background(), &crosschaintypes.QueryLastPendingOracleSetRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
 	return response.OracleSets, nil
 }
 
-func (cli *CrossChainClient) GetOracleByOrchestrator(orchestratorAddress string, chainName string) (*crosschaintypes.Oracle, error) {
-	response, err := cli.crossChainClient.GetOracleByOrchestrator(context.Background(), &crosschaintypes.QueryOracleByOrchestratorRequest{OrchestratorAddress: orchestratorAddress, ChainName: chainName})
+func (cli *CrossChainClient) GetOracleByBridgerAddr(bridgerAddress string, chainName string) (*crosschaintypes.Oracle, error) {
+	response, err := cli.crossChainClient.GetOracleByBridgerAddr(context.Background(), &crosschaintypes.QueryOracleByBridgerAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
 	return response.Oracle, nil
 }
 
-func (cli *CrossChainClient) LastEventNonceByAddr(orchestratorAddress string, chainName string) (uint64, error) {
-	response, err := cli.crossChainClient.LastEventNonceByAddr(context.Background(), &crosschaintypes.QueryLastEventNonceByAddrRequest{OrchestratorAddress: orchestratorAddress, ChainName: chainName})
+func (cli *CrossChainClient) LastEventNonceByAddr(bridgerAddress string, chainName string) (uint64, error) {
+	response, err := cli.crossChainClient.LastEventNonceByAddr(context.Background(), &crosschaintypes.QueryLastEventNonceByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return 0, err
 	}
 	return response.EventNonce, nil
 }
 
-func (cli *CrossChainClient) LastEventBlockHeightByAddr(orchestratorAddress string, chainName string) (uint64, error) {
-	response, err := cli.crossChainClient.LastEventBlockHeightByAddr(context.Background(), &crosschaintypes.QueryLastEventBlockHeightByAddrRequest{OrchestratorAddress: orchestratorAddress, ChainName: chainName})
+func (cli *CrossChainClient) LastEventBlockHeightByAddr(bridgerAddress string, chainName string) (uint64, error) {
+	response, err := cli.crossChainClient.LastEventBlockHeightByAddr(context.Background(), &crosschaintypes.QueryLastEventBlockHeightByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return 0, err
 	}

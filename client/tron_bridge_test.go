@@ -9,7 +9,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	sdkCommon "github.com/fbsobreira/gotron-sdk/pkg/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
-	gravitytypes "github.com/functionx/fx-core/x/crosschain/types"
+	crosschaintypes "github.com/functionx/fx-core/x/crosschain/types"
 	"github.com/functionx/fx-tron-bridge/contract"
 	"testing"
 	"time"
@@ -132,9 +132,9 @@ func Test_GetBlockInfoByNum(t *testing.T) {
 }
 
 func TestEncodeOracleSetConfirmHash(t *testing.T) {
-	var oracle = gravitytypes.OracleSet{
+	var oracle = crosschaintypes.OracleSet{
 		Nonce: 10,
-		Members: []*gravitytypes.BridgeValidator{
+		Members: []crosschaintypes.BridgeValidator{
 			{
 				Power:           1000,
 				ExternalAddress: "TFysCB929XGezbnyumoFScyevjDggu3BPq",
@@ -153,19 +153,19 @@ func TestEncodeOracleSetConfirmHash(t *testing.T) {
 }
 
 func TestEncodeConfirmBatchHash(t *testing.T) {
-	txBatch := gravitytypes.OutgoingTxBatch{
+	txBatch := crosschaintypes.OutgoingTxBatch{
 		BatchNonce:   4,
 		BatchTimeout: 1000,
-		Transactions: []*gravitytypes.OutgoingTransferTx{
+		Transactions: []*crosschaintypes.OutgoingTransferTx{
 			{
 				Id:          1,
 				Sender:      "fx1zgpzdf2uqla7hkx85wnn4p2r3duwqzd8xst6v2",
 				DestAddress: "TFysCB929XGezbnyumoFScyevjDggu3BPq",
-				Token: &gravitytypes.ExternalToken{
+				Token: crosschaintypes.ERC20Token{
 					Contract: "TFETBkg3wrgEEDPXEPZCem4tegsaTw2fwR",
 					Amount:   sdk.NewInt(2000000000),
 				},
-				Fee: &gravitytypes.ExternalToken{
+				Fee: crosschaintypes.ERC20Token{
 					Contract: "TFETBkg3wrgEEDPXEPZCem4tegsaTw2fwR",
 					Amount:   sdk.NewInt(10000000),
 				},

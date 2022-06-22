@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"math/big"
 	"net/url"
 	"time"
@@ -11,7 +12,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/client"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/api"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
-	troncontract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
+	"github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/google"
 )
@@ -32,7 +33,7 @@ func NewTronGrpcClient(grpcUrl string) (*TronClient, error) {
 	if parseUrl.Scheme == "https" {
 		opts = append(opts, grpc.WithCredentialsBundle(google.NewDefaultCredentials()))
 	} else {
-		opts = append(opts, grpc.WithInsecure())
+		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 
 	if err := cli.Start(opts...); err != nil {
@@ -64,7 +65,7 @@ func (c *TronClient) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
 }
 
 func (c *TronClient) EstimateGas(from, to, data []byte) (uint64, error) {
-	tx := &troncontract.TriggerSmartContract{
+	tx := &contract.TriggerSmartContract{
 		OwnerAddress:    from,
 		ContractAddress: to,
 		Data:            data,
@@ -93,7 +94,7 @@ func (c *TronClient) EstimateGas(from, to, data []byte) (uint64, error) {
 	return uint64(transactionExtention.EnergyUsed), nil
 }
 
-func (c *TronClient) TriggerContract(ct *troncontract.TriggerSmartContract, feeLimit int64) (*api.TransactionExtention, error) {
+func (c *TronClient) TriggerContract(ct *contract.TriggerSmartContract, feeLimit int64) (*api.TransactionExtention, error) {
 	tx, err := c.Client.TriggerContract(context.Background(), ct)
 	if err != nil {
 		return nil, err
