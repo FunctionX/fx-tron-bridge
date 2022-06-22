@@ -31,18 +31,18 @@ func NewSinger(fxBridge *FxTronBridge, fees string) (*Singer, error) {
 }
 
 func (s Singer) confirm() error {
-	orchestrator, err := s.CrossChainClient.GetOracleByOrchestrator(s.GetOrcAddr().String(), fxtronbridge.Tron)
+	bridger, err := s.CrossChainClient.GetOracleByBridgerAddr(s.GetBridgerAddr().String(), fxtronbridge.Tron)
 	if err != nil {
 		return err
 	}
-	if orchestrator.Jailed {
-		logger.Warnf("get orchestrator oracle status is not active orchestrator: %v", orchestrator)
+	if bridger.Online {
+		logger.Warnf("get oracle by bridger status is not active bridger: %v", bridger)
 		return nil
 	}
-	if orchestrator.ExternalAddress != s.GetTronAddr().String() {
-		panic("invalid tron private key, expect " + orchestrator.ExternalAddress)
+	if bridger.ExternalAddress != s.GetTronAddr().String() {
+		panic("invalid tron private key, expect " + bridger.ExternalAddress)
 	}
-	logger.Debugf("confirm orchestrator address: %s", orchestrator.OrchestratorAddress)
+	logger.Debugf("confirm bridger address: %s", bridger.BridgerAddress)
 
 	if err = s.singerOracleSetConfirm(); err != nil {
 		logger.Errorf("singer oracle_set confirm error: %s", err.Error())
@@ -55,9 +55,9 @@ func (s Singer) confirm() error {
 }
 
 func (s *Singer) singerConfirmBatch() error {
-	txBatch, err := s.CrossChainClient.LastPendingBatchRequestByAddr(s.GetOrcAddr().String(), fxtronbridge.Tron)
+	txBatch, err := s.CrossChainClient.LastPendingBatchRequestByAddr(s.GetBridgerAddr().String(), fxtronbridge.Tron)
 	if err != nil {
-		logger.Errorf("get last pending batch request by addr fail orcAddr: %s, err: %s", s.GetOrcAddr().String(), err.Error())
+		logger.Errorf("get last pending batch request by addr fail orcAddr: %s, err: %s", s.GetBridgerAddr().String(), err.Error())
 		return err
 	}
 	if txBatch == nil {
@@ -77,12 +77,12 @@ func (s *Singer) singerConfirmBatch() error {
 	}
 	return s.BatchSendMsg([]sdk.Msg{
 		&gravitytypes.MsgConfirmBatch{
-			Nonce:               txBatch.BatchNonce,
-			TokenContract:       txBatch.TokenContract,
-			OrchestratorAddress: s.GetOrcAddr().String(),
-			ExternalAddress:     s.GetTronAddr().String(),
-			Signature:           hex.EncodeToString(sign),
-			ChainName:           fxtronbridge.Tron,
+			Nonce:           txBatch.BatchNonce,
+			TokenContract:   txBatch.TokenContract,
+			BridgerAddress:  s.GetBridgerAddr().String(),
+			ExternalAddress: s.GetTronAddr().String(),
+			Signature:       hex.EncodeToString(sign),
+			ChainName:       fxtronbridge.Tron,
 		}}, fxtronbridge.BatchSendMsgCount)
 }
 
@@ -92,15 +92,15 @@ type IMsg interface {
 }
 
 func (s *Singer) singerOracleSetConfirm() error {
-	oracleSet, err := s.CrossChainClient.LastPendingOracleSetRequestByAddr(s.GetOrcAddr().String(), fxtronbridge.Tron)
+	oracleSet, err := s.CrossChainClient.LastPendingOracleSetRequestByAddr(s.GetBridgerAddr().String(), fxtronbridge.Tron)
 	if err != nil {
-		logger.Errorf("get last pending oracle set request by addr fail orcAddr: %s, err: %s", s.GetOrcAddr().String(), err.Error())
+		logger.Errorf("get last pending oracle set request by addr fail orcAddr: %s, err: %s", s.GetBridgerAddr().String(), err.Error())
 		return err
 	}
 	if len(oracleSet) <= 0 {
 		return nil
 	}
-	logger.Infof("singer oracle set confirm oracle set len: %d, oracle first nonce: %d, orcAddr: %s", len(oracleSet), oracleSet[0].Nonce, s.GetOrcAddr().String())
+	logger.Infof("singer oracle set confirm oracle set len: %d, oracle first nonce: %d, bridger address: %s", len(oracleSet), oracleSet[0].Nonce, s.GetBridgerAddr().String())
 
 	iMsgs := make([]IMsg, 0)
 	for _, oracle := range oracleSet {
@@ -115,11 +115,11 @@ func (s *Singer) singerOracleSetConfirm() error {
 			return err
 		}
 		iMsgs = append(iMsgs, &gravitytypes.MsgOracleSetConfirm{
-			Nonce:               oracle.Nonce,
-			OrchestratorAddress: s.GetOrcAddr().String(),
-			ExternalAddress:     s.GetTronAddr().String(),
-			Signature:           hex.EncodeToString(sign),
-			ChainName:           fxtronbridge.Tron,
+			Nonce:           oracle.Nonce,
+			BridgerAddress:  s.GetBridgerAddr().String(),
+			ExternalAddress: s.GetTronAddr().String(),
+			Signature:       hex.EncodeToString(sign),
+			ChainName:       fxtronbridge.Tron,
 		})
 	}
 	sort.Slice(iMsgs, func(i, j int) bool {

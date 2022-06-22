@@ -23,14 +23,14 @@ type IEvent interface {
 	GetEventNonce() uint64
 }
 
-func (event *FxBridgeTronTransactionBatchExecutedEvent) ToMsg(blockHeight uint64, orchestrator string) sdk.Msg {
+func (event *FxBridgeTronTransactionBatchExecutedEvent) ToMsg(blockHeight uint64, bridgerAddress string) sdk.Msg {
 	return &crosschaintypes.MsgSendToExternalClaim{
-		EventNonce:    event.EventNonce.Uint64(),
-		BlockHeight:   blockHeight,
-		Orchestrator:  orchestrator,
-		BatchNonce:    event.BatchNonce.Uint64(),
-		TokenContract: addressToString(event.Token),
-		ChainName:     fxtronbridge.Tron,
+		EventNonce:     event.EventNonce.Uint64(),
+		BlockHeight:    blockHeight,
+		BridgerAddress: bridgerAddress,
+		BatchNonce:     event.BatchNonce.Uint64(),
+		TokenContract:  AddressToString(event.Token),
+		ChainName:      fxtronbridge.Tron,
 	}
 }
 
@@ -38,18 +38,18 @@ func (event *FxBridgeTronTransactionBatchExecutedEvent) GetEventNonce() uint64 {
 	return event.EventNonce.Uint64()
 }
 
-func (event *FxBridgeTronOracleSetUpdatedEvent) ToMsg(blockHeight uint64, orchestrator string) sdk.Msg {
-	members := make([]*crosschaintypes.BridgeValidator, len(event.Oracles))
+func (event *FxBridgeTronOracleSetUpdatedEvent) ToMsg(blockHeight uint64, bridgerAddress string) sdk.Msg {
+	members := make([]crosschaintypes.BridgeValidator, len(event.Oracles))
 	for i, oracleAddress := range event.Oracles {
-		members[i] = &crosschaintypes.BridgeValidator{
+		members[i] = crosschaintypes.BridgeValidator{
 			Power:           event.Powers[i].Uint64(),
-			ExternalAddress: addressToString(oracleAddress),
+			ExternalAddress: AddressToString(oracleAddress),
 		}
 	}
 	return &crosschaintypes.MsgOracleSetUpdatedClaim{
 		EventNonce:     event.EventNonce.Uint64(),
 		BlockHeight:    blockHeight,
-		Orchestrator:   orchestrator,
+		BridgerAddress: bridgerAddress,
 		OracleSetNonce: event.NewOracleSetNonce.Uint64(),
 		Members:        members,
 		ChainName:      fxtronbridge.Tron,
@@ -60,17 +60,17 @@ func (event *FxBridgeTronOracleSetUpdatedEvent) GetEventNonce() uint64 {
 	return event.EventNonce.Uint64()
 }
 
-func (event *FxBridgeTronAddBridgeTokenEvent) ToMsg(blockHeight uint64, orchestrator string) sdk.Msg {
+func (event *FxBridgeTronAddBridgeTokenEvent) ToMsg(blockHeight uint64, bridgerAddress string) sdk.Msg {
 	return &crosschaintypes.MsgBridgeTokenClaim{
-		EventNonce:    event.EventNonce.Uint64(),
-		TokenContract: addressToString(event.TokenContract),
-		BlockHeight:   blockHeight,
-		Orchestrator:  orchestrator,
-		Name:          event.Name,
-		Symbol:        event.Symbol,
-		Decimals:      uint64(event.Decimals),
-		ChannelIbc:    hexByte32ToTargetIbc(event.ChannelIBC),
-		ChainName:     fxtronbridge.Tron,
+		EventNonce:     event.EventNonce.Uint64(),
+		TokenContract:  AddressToString(event.TokenContract),
+		BlockHeight:    blockHeight,
+		BridgerAddress: bridgerAddress,
+		Name:           event.Name,
+		Symbol:         event.Symbol,
+		Decimals:       uint64(event.Decimals),
+		ChannelIbc:     hexByte32ToTargetIbc(event.ChannelIBC),
+		ChainName:      fxtronbridge.Tron,
 	}
 }
 
@@ -78,17 +78,17 @@ func (event *FxBridgeTronAddBridgeTokenEvent) GetEventNonce() uint64 {
 	return event.EventNonce.Uint64()
 }
 
-func (event *FxBridgeTronSendToFxEvent) ToMsg(blockHeight uint64, orchestrator string) sdk.Msg {
+func (event *FxBridgeTronSendToFxEvent) ToMsg(blockHeight uint64, bridgerAddress string) sdk.Msg {
 	return &crosschaintypes.MsgSendToFxClaim{
-		EventNonce:    event.EventNonce.Uint64(),
-		BlockHeight:   blockHeight,
-		Orchestrator:  orchestrator,
-		TokenContract: addressToString(event.TokenContract),
-		Amount:        sdk.NewIntFromBigInt(event.Amount),
-		Sender:        addressToString(event.Sender),
-		Receiver:      sdk.AccAddress(event.Destination[12:]).String(),
-		TargetIbc:     hexByte32ToTargetIbc(event.TargetIBC),
-		ChainName:     fxtronbridge.Tron,
+		EventNonce:     event.EventNonce.Uint64(),
+		BlockHeight:    blockHeight,
+		BridgerAddress: bridgerAddress,
+		TokenContract:  AddressToString(event.TokenContract),
+		Amount:         sdk.NewIntFromBigInt(event.Amount),
+		Sender:         AddressToString(event.Sender),
+		Receiver:       sdk.AccAddress(event.Destination[12:]).String(),
+		TargetIbc:      hexByte32ToTargetIbc(event.TargetIBC),
+		ChainName:      fxtronbridge.Tron,
 	}
 }
 
@@ -175,7 +175,7 @@ func fixedBytes(value string) [32]byte {
 	return arr
 }
 
-func addressToString(addr ethcommon.Address) string {
+func AddressToString(addr ethcommon.Address) string {
 	addressByte := append([]byte{}, address.TronBytePrefix)
 	addressByte = append(addressByte, addr.Bytes()...)
 	return troncommon.EncodeCheck(addressByte)

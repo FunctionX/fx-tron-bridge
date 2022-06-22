@@ -22,10 +22,10 @@ type Oracle struct {
 }
 
 func NewOracle(fxBridge *FxTronBridge, startBlockNumber uint64) (*Oracle, error) {
-	lastBlockNumber, err := fxBridge.CrossChainClient.LastEventBlockHeightByAddr(fxBridge.GetOrcAddr().String(), fxtronbridge.Tron)
+	lastBlockNumber, err := fxBridge.CrossChainClient.LastEventBlockHeightByAddr(fxBridge.GetBridgerAddr().String(), fxtronbridge.Tron)
 	logger.Infof("new oracle start block number: %d, fx core last block number: %d", startBlockNumber, lastBlockNumber)
 	if err != nil {
-		logger.Errorf("get last block number fail orcAddr: %s, err: %s", fxBridge.GetOrcAddr().String(), err.Error())
+		logger.Errorf("get last block number fail bridger address: %s, err: %s", fxBridge.GetBridgerAddr().String(), err.Error())
 		return nil, err
 	}
 	cacheBlockNumber, err := readLastBlockNumber()
@@ -79,18 +79,18 @@ func getLastBlockNumber(bridgeAddr string, tronClient *client.TronClient) (uint6
 }
 
 func (o *Oracle) bridgeEvent() error {
-	orchestrator, err := o.CrossChainClient.GetOracleByOrchestrator(o.GetOrcAddr().String(), fxtronbridge.Tron)
+	bridger, err := o.CrossChainClient.GetOracleByBridgerAddr(o.GetBridgerAddr().String(), fxtronbridge.Tron)
 	if err != nil {
-		logger.Errorf("get oracle by orchestrator fail orcAddr: %s, err: %s", o.GetOrcAddr().String(), err.Error())
+		logger.Errorf("get oracle by bridger fail bridger: %s, err: %s", o.GetBridgerAddr().String(), err.Error())
 		return err
 	}
-	if orchestrator.Jailed {
-		logger.Warn("get orchestrator oracle status is not active orchestrator: %v", orchestrator)
+	if bridger.Online {
+		logger.Warn("get oracle status is not active bridger: %v", bridger)
 		return nil
 	}
-	lastEventNonce, err := o.CrossChainClient.LastEventNonceByAddr(o.GetOrcAddr().String(), fxtronbridge.Tron)
+	lastEventNonce, err := o.CrossChainClient.LastEventNonceByAddr(o.GetBridgerAddr().String(), fxtronbridge.Tron)
 	if err != nil {
-		logger.Errorf("get last event nonce by addr fail orcAddr: %s, err: %s", o.GetOrcAddr().String(), err.Error())
+		logger.Errorf("get last event nonce by addr fail orcAddr: %s, err: %s", o.GetBridgerAddr().String(), err.Error())
 		return err
 	}
 	o.lastEventNonce = lastEventNonce
@@ -129,7 +129,7 @@ func (o *Oracle) bridgeEvent() error {
 			if event.GetEventNonce() <= lastEventNonce {
 				continue
 			}
-			msgs = append(msgs, event.ToMsg(blockNumber, o.GetOrcAddr().String()))
+			msgs = append(msgs, event.ToMsg(blockNumber, o.GetBridgerAddr().String()))
 		}
 
 		if len(msgs) > fxtronbridge.BatchSendMsgCount || batchBlockNumber > 100 || blockNumber == endBlockNumber {

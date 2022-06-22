@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"net/url"
 	"strings"
 	"time"
@@ -60,7 +61,7 @@ func NewGrpcConn(rawUrl string) (*grpc.ClientConn, error) {
 	if u.Scheme == "https" {
 		opts = append(opts, grpc.WithCredentialsBundle(google.NewDefaultCredentials()))
 	} else {
-		opts = append(opts, grpc.WithInsecure())
+		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 	return grpc.Dial(_url, opts...)
 }
