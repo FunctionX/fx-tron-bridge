@@ -15,7 +15,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"math/big"
 	"testing"
 	"time"
@@ -102,7 +101,7 @@ func TestGasPrice(t *testing.T) {
 
 func TestGetNowBlock(t *testing.T) {
 	grpcClient := client.NewGrpcClient("http://127.0.0.1:50051")
-	err := grpcClient.Start(grpc.WithTransportCredentials(insecure.NewCredentials()))
+	err := grpcClient.Start(grpc.WithInsecure())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,7 +114,7 @@ func TestGetNowBlock(t *testing.T) {
 
 func TestGetChainParams(t *testing.T) {
 	grpcClient := client.NewGrpcClient("http://127.0.0.1:50051")
-	err := grpcClient.Start(grpc.WithTransportCredentials(insecure.NewCredentials()))
+	err := grpcClient.Start(grpc.WithInsecure())
 	require.NoError(t, err)
 
 	parameters, err := grpcClient.Client.GetChainParameters(context.Background(), &api.EmptyMessage{})

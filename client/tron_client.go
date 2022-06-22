@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"google.golang.org/grpc/credentials/insecure"
 	"math/big"
 	"net/url"
 	"time"
@@ -33,7 +32,7 @@ func NewTronGrpcClient(grpcUrl string) (*TronClient, error) {
 	if parseUrl.Scheme == "https" {
 		opts = append(opts, grpc.WithCredentialsBundle(google.NewDefaultCredentials()))
 	} else {
-		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		opts = append(opts, grpc.WithInsecure())
 	}
 
 	if err := cli.Start(opts...); err != nil {
