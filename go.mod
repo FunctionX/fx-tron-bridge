@@ -6,13 +6,12 @@ require (
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/ethereum/go-ethereum v1.10.16
 	github.com/fbsobreira/gotron-sdk v0.0.0-20211206103227-17533f63f585
-	github.com/functionx/fx-core v1.2.0-dhobyghaut.0.20220711075524-8f2f0f7bf917
+	github.com/functionx/fx-core v1.2.0-dhobyghaut.0.20220712074709-2f554ff291a3
 	github.com/gogo/protobuf v1.3.3
 	github.com/prometheus/client_golang v1.12.2
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	github.com/stretchr/testify v1.7.5
-	github.com/tendermint/tendermint v0.34.20-0.20220517115723-e6f071164839
 	go.uber.org/zap v1.19.1
 	google.golang.org/grpc v1.47.0
 )

@@ -30,7 +30,8 @@ func NewFxTronBridge(bridgeAddr, tronGrpc, fxGrpc string, orcPrivKey *secp256k1.
 		return nil, err
 	}
 
-	crossChainClient, err := fxchain.NewCrossChainClient(fxGrpc)
+	ctx := context.Background()
+	crossChainClient, err := fxchain.NewCrossChainClient(ctx, fxGrpc)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +54,7 @@ func (f *FxTronBridge) GetTronAddr() address.Address {
 }
 
 func (f *FxTronBridge) setFxKeyBalanceMetrics(fees string) {
-	balance, err := f.CrossChainClient.QueryBalance(f.GetBridgerAddr(), fees)
+	balance, err := f.CrossChainClient.QueryBalance(f.GetBridgerAddr().String(), fees)
 	if err != nil {
 		logger.Errorf("query balance fail fees: %s, err: %s", fees, err.Error())
 		return
