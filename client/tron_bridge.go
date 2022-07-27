@@ -14,6 +14,7 @@ import (
 	troncommon "github.com/fbsobreira/gotron-sdk/pkg/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
 	troncontract "github.com/fbsobreira/gotron-sdk/pkg/proto/core/contract"
+
 	"github.com/functionx/fx-tron-bridge/contract"
 )
 

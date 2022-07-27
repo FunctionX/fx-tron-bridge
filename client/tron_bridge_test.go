@@ -3,16 +3,18 @@ package client
 import (
 	"encoding/hex"
 	"fmt"
+	"testing"
+	"time"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	sdkCommon "github.com/fbsobreira/gotron-sdk/pkg/common"
 	"github.com/fbsobreira/gotron-sdk/pkg/proto/core"
-	crosschaintypes "github.com/functionx/fx-core/x/crosschain/types"
+	crosschaintypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+
 	"github.com/functionx/fx-tron-bridge/contract"
-	"testing"
-	"time"
 )
 
 func TestStateLastOracleSetNonce(t *testing.T) {

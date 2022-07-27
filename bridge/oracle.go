@@ -3,16 +3,18 @@ package bridge
 import (
 	"context"
 	"fmt"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	fxtronbridge "github.com/functionx/fx-tron-bridge"
-	"github.com/functionx/fx-tron-bridge/client"
-	"github.com/functionx/fx-tron-bridge/internal/logger"
-	"github.com/functionx/fx-tron-bridge/internal/utils"
 	"io/ioutil"
 	"os"
 	"path"
 	"sort"
 	"strconv"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	fxtronbridge "github.com/functionx/fx-tron-bridge"
+	"github.com/functionx/fx-tron-bridge/client"
+	"github.com/functionx/fx-tron-bridge/internal/logger"
+	"github.com/functionx/fx-tron-bridge/internal/utils"
 )
 
 type Oracle struct {

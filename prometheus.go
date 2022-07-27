@@ -2,10 +2,12 @@ package fxtronbridge
 
 import (
 	"fmt"
-	"github.com/functionx/fx-tron-bridge/internal/logger"
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"net/http"
+
+	"github.com/functionx/fx-tron-bridge/internal/logger"
 )
 
 var BlockHeightProm = prometheus.NewGauge(prometheus.GaugeOpts{Subsystem: "eth_bridge_oracle", Name: "sync_block_height"})

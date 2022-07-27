@@ -6,7 +6,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/ethereum/go-ethereum v1.10.16
 	github.com/fbsobreira/gotron-sdk v0.0.0-20211206103227-17533f63f585
-	github.com/functionx/fx-core v1.2.0-dhobyghaut.0.20220712074709-2f554ff291a3
+	github.com/functionx/fx-core/v2 v2.2.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/prometheus/client_golang v1.12.2
 	github.com/spf13/cobra v1.5.0

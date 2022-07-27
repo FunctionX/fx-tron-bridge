@@ -2,8 +2,9 @@ package fxchain
 
 import (
 	"context"
-	"github.com/functionx/fx-core/client/grpc"
-	crosschaintypes "github.com/functionx/fx-core/x/crosschain/types"
+
+	"github.com/functionx/fx-core/v2/client/grpc"
+	crosschaintypes "github.com/functionx/fx-core/v2/x/crosschain/types"
 )
 
 /* ======================================> Cross Chain gravity grpc <====================================== */

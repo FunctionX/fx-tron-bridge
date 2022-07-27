@@ -1,9 +1,10 @@
 package contract
 
 import (
+	"testing"
+
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	troncommon "github.com/fbsobreira/gotron-sdk/pkg/common"
-	"testing"
 )
 
 func TestAddressToString(t *testing.T) {

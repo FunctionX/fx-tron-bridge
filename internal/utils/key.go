@@ -3,14 +3,15 @@ package utils
 import (
 	"crypto/ecdsa"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
+
 	sdkcrypto "github.com/cosmos/cosmos-sdk/crypto"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
-	"io/ioutil"
-	"os"
-	"strings"
 )
 
 func DecryptFxPrivateKey(fxKeyValue, fxPwdValue string) (*secp256k1.PrivKey, error) {

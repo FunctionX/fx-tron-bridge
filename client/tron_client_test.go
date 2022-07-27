@@ -3,6 +3,10 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"math/big"
+	"testing"
+	"time"
+
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
@@ -15,9 +19,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
-	"math/big"
-	"testing"
-	"time"
 )
 
 const grpcUrl = "http://3.225.171.164:50051"
