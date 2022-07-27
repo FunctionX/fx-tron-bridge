@@ -2,13 +2,15 @@ package bridge
 
 import (
 	"encoding/hex"
+	"sort"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	gravitytypes "github.com/functionx/fx-core/x/crosschain/types"
+	gravitytypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/contract"
 	"github.com/functionx/fx-tron-bridge/internal/logger"
-	"sort"
 )
 
 type Singer struct {

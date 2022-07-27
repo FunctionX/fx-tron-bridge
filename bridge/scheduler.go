@@ -1,9 +1,10 @@
 package bridge
 
 import (
+	"time"
+
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/internal/logger"
-	"time"
 )
 
 func Run(fxBridge *FxTronBridge, startBlockNumber uint64, fees string) error {

@@ -1,13 +1,15 @@
 package main
 
 import (
+	"os"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/bridge"
 	"github.com/functionx/fx-tron-bridge/internal/logger"
 	"github.com/functionx/fx-tron-bridge/internal/utils"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"os"
 )
 
 const FxAddressPrefixEnv = "FX_ADDRESS_PREFIX"

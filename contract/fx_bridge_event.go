@@ -3,6 +3,8 @@ package contract
 import (
 	"encoding/hex"
 	"fmt"
+	"math/big"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethabi "github.com/ethereum/go-ethereum/accounts/abi"
 	ethcommon "github.com/ethereum/go-ethereum/common"
@@ -11,9 +13,9 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	troncommon "github.com/fbsobreira/gotron-sdk/pkg/common"
-	crosschaintypes "github.com/functionx/fx-core/x/crosschain/types"
+	crosschaintypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
-	"math/big"
 )
 
 const TronSignaturePrefix = "\x19TRON Signed Message:\n32"
