@@ -33,6 +33,8 @@ go.sum: go.mod
 	@echo "--> Download go modules to local cache"
 	@go mod download
 
+.PHONY: build install go.sum
+
 ###############################################################################
 ###                                Linting                                  ###
 ###############################################################################
@@ -46,3 +48,5 @@ format:
 	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs misspell -w -i sucess
 	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs goimports -w -local github.com/functionx/fx-tron-bridge
+
+.PHONY: lint format
