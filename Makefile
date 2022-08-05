@@ -12,7 +12,7 @@ ldflags = '-X github.com/functionx/fx-tron-bridge.Version=$(VERSION) \
 ###                              Documentation                              ###
 ###############################################################################
 
-.PHONY: build install go.sum
+.PHONY: build lint
 
 BUILDDIR ?= $(CURDIR)/build
 
@@ -33,17 +33,16 @@ go.sum: go.mod
 	@echo "--> Download go modules to local cache"
 	@go mod download
 
-docker: build-linux
-	@docker build -t functionx/fx-tron-bridge:latest .
-
 ###############################################################################
 ###                                Linting                                  ###
 ###############################################################################
 
 lint:
 	@echo "--> Running linter"
-	@golangci-lint run
-	@find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.*' | xargs gofmt -d -s
+	golangci-lint run -v --timeout 5m
+	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs gofmt -d -s
 
 format:
-	@find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.*' | xargs gofmt -w -s
+	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs gofmt -w -s
+	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs misspell -w -i sucess
+	find . -name '*.go' -type f -not -path "./build*" -not -path "*.git*" -not -name '*.pb.*' | xargs goimports -w -local github.com/functionx/fx-tron-bridge
