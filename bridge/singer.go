@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	gravitytypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+	crosschaintypes "github.com/functionx/fx-core/v3/x/crosschain/types"
 
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 	"github.com/functionx/fx-tron-bridge/contract"
@@ -78,7 +78,7 @@ func (s *Singer) singerConfirmBatch() error {
 		return err
 	}
 	return s.BatchSendMsg([]sdk.Msg{
-		&gravitytypes.MsgConfirmBatch{
+		&crosschaintypes.MsgConfirmBatch{
 			Nonce:           txBatch.BatchNonce,
 			TokenContract:   txBatch.TokenContract,
 			BridgerAddress:  s.GetBridgerAddr().String(),
@@ -116,7 +116,7 @@ func (s *Singer) singerOracleSetConfirm() error {
 			logger.Errorf("singer oracle set confirm sign fail err: %s", err.Error())
 			return err
 		}
-		iMsgs = append(iMsgs, &gravitytypes.MsgOracleSetConfirm{
+		iMsgs = append(iMsgs, &crosschaintypes.MsgOracleSetConfirm{
 			Nonce:           oracle.Nonce,
 			BridgerAddress:  s.GetBridgerAddr().String(),
 			ExternalAddress: s.GetTronAddr().String(),

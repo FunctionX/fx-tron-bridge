@@ -3,7 +3,6 @@ package bridge
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"sort"
@@ -158,7 +157,7 @@ func readLastBlockNumber() (uint64, error) {
 	if !isFile {
 		return 0, nil
 	}
-	bytes, err := ioutil.ReadFile(fileName)
+	bytes, err := os.ReadFile(fileName)
 	if err != nil {
 		return 0, err
 	}
@@ -175,5 +174,5 @@ func saveLastBlockNumber(lastBlockNumber uint64) error {
 		return err
 	}
 	fileName := path.Join(filePath, "lastBlockNumber.info")
-	return ioutil.WriteFile(fileName, []byte(strconv.FormatUint(lastBlockNumber, 10)), os.ModePerm)
+	return os.WriteFile(fileName, []byte(strconv.FormatUint(lastBlockNumber, 10)), os.ModePerm)
 }

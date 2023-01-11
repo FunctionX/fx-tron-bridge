@@ -13,7 +13,7 @@ import (
 	"github.com/fbsobreira/gotron-sdk/pkg/abi"
 	"github.com/fbsobreira/gotron-sdk/pkg/address"
 	troncommon "github.com/fbsobreira/gotron-sdk/pkg/common"
-	crosschaintypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+	crosschaintypes "github.com/functionx/fx-core/v3/x/crosschain/types"
 
 	fxtronbridge "github.com/functionx/fx-tron-bridge"
 )

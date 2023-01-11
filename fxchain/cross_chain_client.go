@@ -3,16 +3,15 @@ package fxchain
 import (
 	"context"
 
-	"github.com/functionx/fx-core/v2/client/grpc"
-	crosschaintypes "github.com/functionx/fx-core/v2/x/crosschain/types"
+	"github.com/functionx/fx-core/v3/client/grpc"
+	crosschaintypes "github.com/functionx/fx-core/v3/x/crosschain/types"
 )
 
 /* ======================================> Cross Chain gravity grpc <====================================== */
 
 type CrossChainClient struct {
 	*grpc.Client
-	ctx              context.Context
-	crossChainClient crosschaintypes.QueryClient
+	ctx context.Context
 }
 
 func NewCrossChainClient(ctx context.Context, grpcUrl string) (*CrossChainClient, error) {
@@ -22,15 +21,14 @@ func NewCrossChainClient(ctx context.Context, grpcUrl string) (*CrossChainClient
 	}
 	client.WithContext(ctx)
 	cli := &CrossChainClient{
-		ctx:              ctx,
-		Client:           client,
-		crossChainClient: crosschaintypes.NewQueryClient(client),
+		ctx:    ctx,
+		Client: client,
 	}
 	return cli, nil
 }
 
 func (cli *CrossChainClient) CurrentOracleSet(chainName string) (*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.CurrentOracleSet(cli.ctx, &crosschaintypes.QueryCurrentOracleSetRequest{ChainName: chainName})
+	response, err := cli.CrosschainQuery().CurrentOracleSet(cli.ctx, &crosschaintypes.QueryCurrentOracleSetRequest{ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +36,7 @@ func (cli *CrossChainClient) CurrentOracleSet(chainName string) (*crosschaintype
 }
 
 func (cli *CrossChainClient) TokenToDenom(token, chainName string) (*crosschaintypes.QueryTokenToDenomResponse, error) {
-	response, err := cli.crossChainClient.TokenToDenom(cli.ctx, &crosschaintypes.QueryTokenToDenomRequest{Token: token, ChainName: chainName})
+	response, err := cli.CrosschainQuery().TokenToDenom(cli.ctx, &crosschaintypes.QueryTokenToDenomRequest{Token: token, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +44,7 @@ func (cli *CrossChainClient) TokenToDenom(token, chainName string) (*crosschaint
 }
 
 func (cli *CrossChainClient) BatchFees(chainName string) ([]*crosschaintypes.BatchFees, error) {
-	response, err := cli.crossChainClient.BatchFees(cli.ctx, &crosschaintypes.QueryBatchFeeRequest{ChainName: chainName})
+	response, err := cli.CrosschainQuery().BatchFees(cli.ctx, &crosschaintypes.QueryBatchFeeRequest{ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +52,7 @@ func (cli *CrossChainClient) BatchFees(chainName string) ([]*crosschaintypes.Bat
 }
 
 func (cli *CrossChainClient) BatchConfirms(nonce uint64, tokenContract, chainName string) ([]*crosschaintypes.MsgConfirmBatch, error) {
-	response, err := cli.crossChainClient.BatchConfirms(cli.ctx, &crosschaintypes.QueryBatchConfirmsRequest{Nonce: nonce, TokenContract: tokenContract, ChainName: chainName})
+	response, err := cli.CrosschainQuery().BatchConfirms(cli.ctx, &crosschaintypes.QueryBatchConfirmsRequest{Nonce: nonce, TokenContract: tokenContract, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +60,7 @@ func (cli *CrossChainClient) BatchConfirms(nonce uint64, tokenContract, chainNam
 }
 
 func (cli *CrossChainClient) OutgoingTxBatches(chainName string) ([]*crosschaintypes.OutgoingTxBatch, error) {
-	response, err := cli.crossChainClient.OutgoingTxBatches(cli.ctx, &crosschaintypes.QueryOutgoingTxBatchesRequest{ChainName: chainName})
+	response, err := cli.CrosschainQuery().OutgoingTxBatches(cli.ctx, &crosschaintypes.QueryOutgoingTxBatchesRequest{ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +68,7 @@ func (cli *CrossChainClient) OutgoingTxBatches(chainName string) ([]*crosschaint
 }
 
 func (cli *CrossChainClient) OracleSetConfirmsByNonce(nonce uint64, chainName string) ([]*crosschaintypes.MsgOracleSetConfirm, error) {
-	response, err := cli.crossChainClient.OracleSetConfirmsByNonce(cli.ctx, &crosschaintypes.QueryOracleSetConfirmsByNonceRequest{Nonce: nonce, ChainName: chainName})
+	response, err := cli.CrosschainQuery().OracleSetConfirmsByNonce(cli.ctx, &crosschaintypes.QueryOracleSetConfirmsByNonceRequest{Nonce: nonce, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +76,7 @@ func (cli *CrossChainClient) OracleSetConfirmsByNonce(nonce uint64, chainName st
 }
 
 func (cli *CrossChainClient) LastOracleSetRequests(chainName string) ([]*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.LastOracleSetRequests(cli.ctx, &crosschaintypes.QueryLastOracleSetRequestsRequest{ChainName: chainName})
+	response, err := cli.CrosschainQuery().LastOracleSetRequests(cli.ctx, &crosschaintypes.QueryLastOracleSetRequestsRequest{ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +84,7 @@ func (cli *CrossChainClient) LastOracleSetRequests(chainName string) ([]*crossch
 }
 
 func (cli *CrossChainClient) OracleSetRequest(nonce uint64, chainName string) (*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.OracleSetRequest(cli.ctx, &crosschaintypes.QueryOracleSetRequestRequest{Nonce: nonce, ChainName: chainName})
+	response, err := cli.CrosschainQuery().OracleSetRequest(cli.ctx, &crosschaintypes.QueryOracleSetRequestRequest{Nonce: nonce, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +92,7 @@ func (cli *CrossChainClient) OracleSetRequest(nonce uint64, chainName string) (*
 }
 
 func (cli *CrossChainClient) LastPendingBatchRequestByAddr(bridgerAddress string, chainName string) (*crosschaintypes.OutgoingTxBatch, error) {
-	response, err := cli.crossChainClient.LastPendingBatchRequestByAddr(cli.ctx, &crosschaintypes.QueryLastPendingBatchRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
+	response, err := cli.CrosschainQuery().LastPendingBatchRequestByAddr(cli.ctx, &crosschaintypes.QueryLastPendingBatchRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +100,7 @@ func (cli *CrossChainClient) LastPendingBatchRequestByAddr(bridgerAddress string
 }
 
 func (cli *CrossChainClient) Params(chainName string) (*crosschaintypes.Params, error) {
-	response, err := cli.crossChainClient.Params(cli.ctx, &crosschaintypes.QueryParamsRequest{ChainName: chainName})
+	response, err := cli.CrosschainQuery().Params(cli.ctx, &crosschaintypes.QueryParamsRequest{ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +108,7 @@ func (cli *CrossChainClient) Params(chainName string) (*crosschaintypes.Params, 
 }
 
 func (cli *CrossChainClient) LastPendingOracleSetRequestByAddr(bridgerAddress string, chainName string) ([]*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.LastPendingOracleSetRequestByAddr(cli.ctx, &crosschaintypes.QueryLastPendingOracleSetRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
+	response, err := cli.CrosschainQuery().LastPendingOracleSetRequestByAddr(cli.ctx, &crosschaintypes.QueryLastPendingOracleSetRequestByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +116,7 @@ func (cli *CrossChainClient) LastPendingOracleSetRequestByAddr(bridgerAddress st
 }
 
 func (cli *CrossChainClient) GetOracleByBridgerAddr(bridgerAddress string, chainName string) (*crosschaintypes.Oracle, error) {
-	response, err := cli.crossChainClient.GetOracleByBridgerAddr(cli.ctx, &crosschaintypes.QueryOracleByBridgerAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
+	response, err := cli.CrosschainQuery().GetOracleByBridgerAddr(cli.ctx, &crosschaintypes.QueryOracleByBridgerAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +124,7 @@ func (cli *CrossChainClient) GetOracleByBridgerAddr(bridgerAddress string, chain
 }
 
 func (cli *CrossChainClient) LastEventNonceByAddr(bridgerAddress string, chainName string) (uint64, error) {
-	response, err := cli.crossChainClient.LastEventNonceByAddr(cli.ctx, &crosschaintypes.QueryLastEventNonceByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
+	response, err := cli.CrosschainQuery().LastEventNonceByAddr(cli.ctx, &crosschaintypes.QueryLastEventNonceByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return 0, err
 	}
@@ -134,7 +132,7 @@ func (cli *CrossChainClient) LastEventNonceByAddr(bridgerAddress string, chainNa
 }
 
 func (cli *CrossChainClient) LastEventBlockHeightByAddr(bridgerAddress string, chainName string) (uint64, error) {
-	response, err := cli.crossChainClient.LastEventBlockHeightByAddr(cli.ctx, &crosschaintypes.QueryLastEventBlockHeightByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
+	response, err := cli.CrosschainQuery().LastEventBlockHeightByAddr(cli.ctx, &crosschaintypes.QueryLastEventBlockHeightByAddrRequest{BridgerAddress: bridgerAddress, ChainName: chainName})
 	if err != nil {
 		return 0, err
 	}
@@ -142,7 +140,7 @@ func (cli *CrossChainClient) LastEventBlockHeightByAddr(bridgerAddress string, c
 }
 
 func (cli *CrossChainClient) GetGravityId(chainName string) (string, error) {
-	response, err := cli.crossChainClient.Params(cli.ctx, &crosschaintypes.QueryParamsRequest{
+	response, err := cli.CrosschainQuery().Params(cli.ctx, &crosschaintypes.QueryParamsRequest{
 		ChainName: chainName,
 	})
 	if err != nil {
@@ -152,7 +150,7 @@ func (cli *CrossChainClient) GetGravityId(chainName string) (string, error) {
 }
 
 func (cli *CrossChainClient) GetCurrentOracleSet(chainName string) (*crosschaintypes.OracleSet, error) {
-	response, err := cli.crossChainClient.CurrentOracleSet(cli.ctx, &crosschaintypes.QueryCurrentOracleSetRequest{
+	response, err := cli.CrosschainQuery().CurrentOracleSet(cli.ctx, &crosschaintypes.QueryCurrentOracleSetRequest{
 		ChainName: chainName,
 	})
 	if err != nil {
@@ -162,7 +160,7 @@ func (cli *CrossChainClient) GetCurrentOracleSet(chainName string) (*crosschaint
 }
 
 func (cli *CrossChainClient) GetOracleSetRequest(chainName string, nonce uint64) (*crosschaintypes.OracleSet, error) {
-	request, err := cli.crossChainClient.OracleSetRequest(cli.ctx, &crosschaintypes.QueryOracleSetRequestRequest{
+	request, err := cli.CrosschainQuery().OracleSetRequest(cli.ctx, &crosschaintypes.QueryOracleSetRequestRequest{
 		ChainName: chainName,
 		Nonce:     nonce,
 	})
@@ -173,7 +171,7 @@ func (cli *CrossChainClient) GetOracleSetRequest(chainName string, nonce uint64)
 }
 
 func (cli *CrossChainClient) GetLastOracleSetRequest(chainName string) ([]*crosschaintypes.OracleSet, error) {
-	request, err := cli.crossChainClient.LastOracleSetRequests(cli.ctx, &crosschaintypes.QueryLastOracleSetRequestsRequest{
+	request, err := cli.CrosschainQuery().LastOracleSetRequests(cli.ctx, &crosschaintypes.QueryLastOracleSetRequestsRequest{
 		ChainName: chainName,
 	})
 	if err != nil {
@@ -183,7 +181,7 @@ func (cli *CrossChainClient) GetLastOracleSetRequest(chainName string) ([]*cross
 }
 
 func (cli *CrossChainClient) GetOracleSetConfirmsByNonce(chainName string, nonce uint64) ([]*crosschaintypes.MsgOracleSetConfirm, error) {
-	request, err := cli.crossChainClient.OracleSetConfirmsByNonce(cli.ctx, &crosschaintypes.QueryOracleSetConfirmsByNonceRequest{
+	request, err := cli.CrosschainQuery().OracleSetConfirmsByNonce(cli.ctx, &crosschaintypes.QueryOracleSetConfirmsByNonceRequest{
 		ChainName: chainName,
 		Nonce:     nonce,
 	})

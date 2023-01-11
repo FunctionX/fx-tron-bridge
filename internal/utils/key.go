@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/ecdsa"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -20,7 +19,7 @@ func DecryptFxPrivateKey(fxKeyValue, fxPwdValue string) (*secp256k1.PrivKey, err
 		return nil, err
 	}
 	if isFile {
-		keyValueBytes, err := ioutil.ReadFile(fxKeyValue)
+		keyValueBytes, err := os.ReadFile(fxKeyValue)
 		if err != nil {
 			return nil, err
 		}
@@ -30,7 +29,7 @@ func DecryptFxPrivateKey(fxKeyValue, fxPwdValue string) (*secp256k1.PrivKey, err
 		}
 		var pwdBytes []byte
 		if existsPwdFile {
-			pwdBytes, err = ioutil.ReadFile(fxPwdValue)
+			pwdBytes, err = os.ReadFile(fxPwdValue)
 			if err != nil {
 				return nil, err
 			}
@@ -61,7 +60,7 @@ func DecryptEthPrivateKey(tronKeyValue, tronPwdValue string) (*ecdsa.PrivateKey,
 		return nil, err
 	}
 	if isFile {
-		tronKeyValueBytes, err := ioutil.ReadFile(tronKeyValue)
+		tronKeyValueBytes, err := os.ReadFile(tronKeyValue)
 		if err != nil {
 			return nil, err
 		}
@@ -71,7 +70,7 @@ func DecryptEthPrivateKey(tronKeyValue, tronPwdValue string) (*ecdsa.PrivateKey,
 		}
 		var tronPwdBytes []byte
 		if existsPwdFile {
-			tronPwdBytes, err = ioutil.ReadFile(tronPwdValue)
+			tronPwdBytes, err = os.ReadFile(tronPwdValue)
 			if err != nil {
 				return nil, err
 			}
